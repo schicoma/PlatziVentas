@@ -38,34 +38,35 @@ def list_clients():
         )) 
 
 
-def update_client(client_name, update_client_name):
+def update_client(client_name, updated_client):
     #global clients
 
-    if client_name in clients:
-        index = clients.index(client_name)
-        clients[index] = update_client_name
-        return True
-    else:
-        print('Client is not in client\'s list')
-        return False
+    for idx, client in enumerate(clients):
+        if client_name == client['name']:
+            clients[idx] = updated_client
+            return True
+        else:
+            print('Client is not in client\'s list')
+            return False
 
 
 def delete_client(client_name):
     #global clients
 
-    if client_name in clients:
-        clients.remove(client_name)
-        return True
-    else:
-        print('Client is not in client\'s list')
-        return False
+    for idx, client in enumerate(clients):
+        if client_name == client['name']:
+            clients.pop(idx)
+            return True
+        else:
+            print('Client is not in client\'s list')
+            return False
 
 
 def search_client(client_name):
     #global clients
 
     for client in clients:
-        if client != client_name:
+        if client['name'] != client_name:
             continue
         else:
             return True
@@ -138,9 +139,16 @@ if __name__ == '__main__':
         create_client(client)
         list_clients()
     elif command == 'U':
-        client_name = _get_client_name()
-        updated_client_name = input("What is the updated client name? ")
-        result = update_client(client_name, updated_client_name)
+        client_name = _get_client_field('name')
+
+        updated_client = {
+            'name': _get_client_field('name (new)'),
+            'company': _get_client_field('company (new)'),
+            'email': _get_client_field('email (new)'),
+            'position': _get_client_field('position (new)')
+        }
+
+        result = update_client(client_name, updated_client)
 
         if result:
             list_clients()
@@ -151,7 +159,7 @@ if __name__ == '__main__':
         if result:
             list_clients()
     elif command == 'S':
-        client_name = _get_client_name()
+        client_name =  _get_client_field('name')
         found = search_client(client_name)
 
         if found:
