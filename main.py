@@ -1,26 +1,26 @@
 import sys
 
-clients = ['Pablo', 'Ricardo']
-# clients = [
-#     {
-#         'name': 'Pablo',
-#         'company': 'Google',
-#         'email': 'pablo@google.com',
-#         'position': 'Software engineer'
-#     }, {
-#         'name': 'Ricardo',
-#         'company': 'Facebook',
-#         'email': 'pablo@facebook.com',
-#         'position': 'Data engineer'
-#     }
-# ]
+#clients = ['Pablo', 'Ricardo']
+clients = [
+    {
+        'name': 'Pablo',
+        'company': 'Google',
+        'email': 'pablo@google.com',
+        'position': 'Software engineer'
+    }, {
+        'name': 'Ricardo',
+        'company': 'Facebook',
+        'email': 'pablo@facebook.com',
+        'position': 'Data engineer'
+    }
+]
 
 
-def create_client(client_name):
+def create_client(client):
     # tomar la variable global para utilizarla dentro de a función
     #global clients
-    if client_name not in clients:
-        clients.append(client_name)
+    if client not in clients:
+        clients.append(client)
     else:
         print('Client already is in the client\'s list')
 
@@ -28,7 +28,14 @@ def create_client(client_name):
 def list_clients():
     #global clients
     for idx, client in enumerate(clients):
-        print('{}: {}'.format(idx, client))
+        #print('{}: {}'.format(idx, client['name']))
+        print('{uid} | {name} | {company} | {email} | {position}'.format(
+            uid = idx,
+            name = client['name'],
+            company = client['company'],
+            email = client['email'],
+            position = client['position'],
+        )) 
 
 
 def update_client(client_name, update_client_name):
@@ -95,6 +102,21 @@ def _get_client_name():
 
     return client_name
 
+def _get_client_field(field):
+    client_field = None
+
+    while not client_field or len(client_field.strip()) == 0:
+        client_field = input("What is the client {}? ".format(field))
+
+        # if client_field == 'exit':
+        #     client_field = None
+        #     break
+    
+    if not client_field:
+        sys.exit()
+
+    return client_field
+
 
 if __name__ == '__main__':
     # pass -> placeholder para determinar una función vacía
@@ -106,8 +128,14 @@ if __name__ == '__main__':
     if command == "L":
         list_clients()
     elif command == "C":
-        client_name = _get_client_name()
-        create_client(client_name)
+        client = {
+            'name': _get_client_field('name'),
+            'company': _get_client_field('company'),
+            'email': _get_client_field('email'),
+            'position': _get_client_field('position')
+        }
+
+        create_client(client)
         list_clients()
     elif command == 'U':
         client_name = _get_client_name()
