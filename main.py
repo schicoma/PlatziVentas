@@ -30,12 +30,12 @@ def list_clients():
     for idx, client in enumerate(clients):
         #print('{}: {}'.format(idx, client['name']))
         print('{uid} | {name} | {company} | {email} | {position}'.format(
-            uid = idx,
-            name = client['name'],
-            company = client['company'],
-            email = client['email'],
-            position = client['position'],
-        )) 
+            uid=idx,
+            name=client['name'],
+            company=client['company'],
+            email=client['email'],
+            position=client['position'],
+        ))
 
 
 def update_client(client_name, updated_client):
@@ -103,6 +103,7 @@ def _get_client_name():
 
     return client_name
 
+
 def _get_client_field(field):
     client_field = None
 
@@ -112,11 +113,20 @@ def _get_client_field(field):
         # if client_field == 'exit':
         #     client_field = None
         #     break
-    
+
     if not client_field:
         sys.exit()
 
     return client_field
+
+
+def _get_client_user():
+    return {
+        'name': _get_client_field('name'),
+        'company': _get_client_field('company'),
+        'email': _get_client_field('email'),
+        'position': _get_client_field('position')
+    }
 
 
 if __name__ == '__main__':
@@ -129,24 +139,15 @@ if __name__ == '__main__':
     if command == "L":
         list_clients()
     elif command == "C":
-        client = {
-            'name': _get_client_field('name'),
-            'company': _get_client_field('company'),
-            'email': _get_client_field('email'),
-            'position': _get_client_field('position')
-        }
+        client = _get_client_user()
 
         create_client(client)
         list_clients()
     elif command == 'U':
         client_name = _get_client_field('name')
 
-        updated_client = {
-            'name': _get_client_field('name (new)'),
-            'company': _get_client_field('company (new)'),
-            'email': _get_client_field('email (new)'),
-            'position': _get_client_field('position (new)')
-        }
+        print('>>> Type the new client ')
+        updated_client = _get_client_user()
 
         result = update_client(client_name, updated_client)
 
@@ -159,7 +160,7 @@ if __name__ == '__main__':
         if result:
             list_clients()
     elif command == 'S':
-        client_name =  _get_client_field('name')
+        client_name = _get_client_field('name')
         found = search_client(client_name)
 
         if found:
