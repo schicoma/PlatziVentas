@@ -1,19 +1,39 @@
 import sys
+import csv
+import os
 
-#clients = ['Pablo', 'Ricardo']
-clients = [
-    {
-        'name': 'Pablo',
-        'company': 'Google',
-        'email': 'pablo@google.com',
-        'position': 'Software engineer'
-    }, {
-        'name': 'Ricardo',
-        'company': 'Facebook',
-        'email': 'pablo@facebook.com',
-        'position': 'Data engineer'
-    }
-]
+#CLIENTS_FILE = ':.clients.csv'
+CLIENTS_FILE = "E:\\platzi\\python\\2019\\platzi_ventas\\.clients.csv"
+CLIENTS_SCHEMA = ['name', 'company', 'email', 'position']
+clients = []
+
+
+def _initialize_clients_from_storage():
+    # with open(CLIENTS_FILE, mode='r') as f:
+    #     reader = csv.DictReader(f, CLIENTS_SCHEMA)
+    #     for row in reader:
+    #         clients.append(row)
+    #     f.close()
+    f = open(CLIENTS_FILE, mode="r")
+    reader = csv.DictReader(f, fieldnames=CLIENTS_SCHEMA)
+
+    for row in reader:
+        clients.append(row)
+    
+    f.close()
+
+
+def _save_clients_to_storage():
+    tmp_file_name = '{}.tmp'.format(CLIENTS_FILE)
+
+    with open(tmp_file_name, mode='w') as f:
+        writer = csv.DictWriter(f, fieldnames=CLIENTS_SCHEMA)
+        writer.writerows(clients)
+
+        f.close()
+
+    os.remove(CLIENTS_FILE)
+    os.rename(tmp_file_name, CLIENTS_FILE)
 
 
 def create_client(client):
@@ -45,9 +65,9 @@ def update_client(client_name, updated_client):
         if client_name == client['name']:
             clients[idx] = updated_client
             return True
-        else:
-            print('Client is not in client\'s list')
-            return False
+
+    print('Client is not in client\'s list')
+    return False
 
 
 def delete_client(client_name):
@@ -57,9 +77,9 @@ def delete_client(client_name):
         if client_name == client['name']:
             clients.pop(idx)
             return True
-        else:
-            print('Client is not in client\'s list')
-            return False
+
+    print('Client is not in client\'s list')
+    return False
 
 
 def search_client(client_name):
@@ -70,11 +90,6 @@ def search_client(client_name):
             continue
         else:
             return True
-
-
-# def _add_comma():
-#     global clients
-#     clients += ","
 
 
 def _print_welcome():
@@ -131,6 +146,7 @@ def _get_client_user():
 
 if __name__ == '__main__':
     # pass -> placeholder para determinar una función vacía
+    _initialize_clients_from_storage()
     _print_welcome()
 
     command = input()
@@ -142,7 +158,7 @@ if __name__ == '__main__':
         client = _get_client_user()
 
         create_client(client)
-        list_clients()
+        # list_clients()
     elif command == 'U':
         client_name = _get_client_field('name')
 
@@ -152,13 +168,15 @@ if __name__ == '__main__':
         result = update_client(client_name, updated_client)
 
         if result:
-            list_clients()
+            pass
+            # list_clients()
     elif command == 'D':
         client_name = _get_client_name()
         result = delete_client(client_name)
 
         if result:
-            list_clients()
+            pass
+            # list_clients()
     elif command == 'S':
         client_name = _get_client_field('name')
         found = search_client(client_name)
@@ -170,3 +188,5 @@ if __name__ == '__main__':
 
     else:
         print("Invalid command")
+
+    _save_clients_to_storage()
