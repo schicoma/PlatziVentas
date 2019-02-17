@@ -5,6 +5,9 @@ Para instalar platzi ventas
 ``py -m pip install --editable  .``
 Ambiente virtual para que no se instale globalmente
 
+# Usar platzi ventas
+Luego de levantar el entorno virtual, ejecutar ``py --help``
+
 # Notas
 
 - ``py -m pip install virtualenv``
