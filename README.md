@@ -6,7 +6,7 @@ Para instalar platzi ventas
 Ambiente virtual para que no se instale globalmente
 
 # Usar platzi ventas
-Luego de levantar el entorno virtual, ejecutar ``py --help``
+Luego de levantar el entorno virtual, ejecutar ``pv --help``
 
 # Notas
 
